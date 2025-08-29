@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown 2048 Game - AllenLST</title>
+    <title>Countdown Besar-besaran</title>
     <style>
         * {
             margin: 0;
@@ -114,7 +114,7 @@
             </div>
         </div>
         
-        <div class="target-time">Target: Hari ini jam 13:15</div>
+        <div class="target-time">Target: Hari ini jam 19:30</div>
     </div>
 
     <script>
@@ -123,12 +123,13 @@
             const now = new Date();
             let targetTime = new Date();
             
-            // Set target to 01:20 today
-            targetTime.setHours(13, 15, 0, 0);
+            // Set target to 19:30 today only
+            targetTime.setHours(19, 30, 0, 0);
             
-            // If 01:20 has already passed today, set it for tomorrow
+            // If 19:30 has already passed today, show link page immediately
             if (now > targetTime) {
-                targetTime.setDate(targetTime.getDate() + 1);
+                showLinkPage();
+                return;
             }
 
             function updateTimer() {
@@ -167,10 +168,10 @@
                     <h1>✅ Countdown Selesai!</h1>
                     <div class="link-content">
                         <p class="link-message">Link sudah tersedia!</p>
-                        <a href="https://allen-lst.github.io/2048-Game-when-two-tiles-with-the-same-number-touch-they-merge-into-one/app/game" class="link-button" onclick="handleLinkClick()">
+                        <a href="#" class="link-button" onclick="handleLinkClick()">
                             Klik disini untuk lanjut
                         </a>
-                        <p class="link-note">Klik untuk ke halaman game yang baru tersedia🗿🤟</p>
+                        <p class="link-note">Masukkan URL tujuan di JavaScript</p>
                     </div>
                 </div>
             `;
@@ -219,7 +220,7 @@
         
         // Handle link click - ganti URL di sini
         function handleLinkClick() {
-            const targetURL = 'https://www.google.com'; // Ganti dengan URL yang diinginkan
+            const targetURL = 'https://www.example.com'; // Ganti dengan URL yang diinginkan
             window.open(targetURL, '_blank');
         }
 
@@ -227,4 +228,8 @@
         startCountdown();
     </script>
 </body>
-    </html>
+</html> 
+
+
+
+
