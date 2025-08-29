@@ -4,13 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown 2048 Game - AllenLST</title>
-    <link rel="stylesheet" href="game/css/cd.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 40px 50px;
+            border: 1px solid #444;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .timer-display {
+            font-size: 4em;
+            font-weight: bold;
+            color: #00ff88;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+        }
+
+        .time-units {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .time-unit {
+            background: #333;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 100px;
+        }
+
+        .time-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .time-label {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+
+        .target-time {
+            font-size: 1.2em;
+            color: #aaa;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        .completed {
+            color: #ff4757 !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .particles {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
     
     <div class="container">
-        <h1>Countdown 2048 Game</h1>
+        <h1>⏰ Countdown Timer</h1>
         <div class="timer-display" id="mainTimer">00:00:00</div>
         
         <div class="time-units">
@@ -28,9 +114,117 @@
             </div>
         </div>
         
-        <div class="target-time">Target: Hari ini jam 13.20 WIB</div>
+        <div class="target-time">Target: Hari ini jam 13:15</div>
     </div>
 
-  <script src="game/js/cd.js"></script>
+    <script>
+        // Countdown timer logic
+        function startCountdown() {
+            const now = new Date();
+            let targetTime = new Date();
+            
+            // Set target to 01:20 today
+            targetTime.setHours(13, 15, 0, 0);
+            
+            // If 01:20 has already passed today, set it for tomorrow
+            if (now > targetTime) {
+                targetTime.setDate(targetTime.getDate() + 1);
+            }
+
+            function updateTimer() {
+                const now = new Date();
+                const timeDiff = targetTime - now;
+
+                if (timeDiff <= 0) {
+                    showLinkPage();
+                    return;
+                }
+
+                const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                const hoursStr = hours.toString().padStart(2, '0');
+                const minutesStr = minutes.toString().padStart(2, '0');
+                const secondsStr = seconds.toString().padStart(2, '0');
+
+                document.getElementById('mainTimer').textContent = `${hoursStr}:${minutesStr}:${secondsStr}`;
+                document.getElementById('hours').textContent = hoursStr;
+                document.getElementById('minutes').textContent = minutesStr;
+                document.getElementById('seconds').textContent = secondsStr;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Show link page when countdown finished
+        function showLinkPage() {
+            document.body.innerHTML = `
+                <div class="particles" id="particles" style="display: none;"></div>
+                
+                <div class="container">
+                    <h1>✅ Countdown Selesai!</h1>
+                    <div class="link-content">
+                        <p class="link-message">Link sudah tersedia!</p>
+                        <a href="https://allen-lst.github.io/2048-Game-when-two-tiles-with-the-same-number-touch-they-merge-into-one/app/game" class="link-button" onclick="handleLinkClick()">
+                            Klik disini untuk lanjut
+                        </a>
+                        <p class="link-note">Klik untuk ke halaman game yang baru tersedia🗿🤟</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add CSS for link page
+            const style = document.createElement('style');
+            style.textContent = `
+                .link-content {
+                    margin-top: 30px;
+                }
+                
+                .link-message {
+                    font-size: 1.5em;
+                    color: #00ff88;
+                    margin-bottom: 30px;
+                }
+                
+                .link-button {
+                    display: inline-block;
+                    background: #00ff88;
+                    color: #1a1a1a;
+                    padding: 15px 30px;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    font-size: 1.3em;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                    border: 2px solid #00ff88;
+                }
+                
+                .link-button:hover {
+                    background: transparent;
+                    color: #00ff88;
+                    transform: translateY(-2px);
+                }
+                
+                .link-note {
+                    margin-top: 20px;
+                    font-size: 0.9em;
+                    color: #888;
+                    font-style: italic;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Handle link click - ganti URL di sini
+        function handleLinkClick() {
+            const targetURL = 'https://www.google.com'; // Ganti dengan URL yang diinginkan
+            window.open(targetURL, '_blank');
+        }
+
+        // Initialize everything
+        startCountdown();
+    </script>
 </body>
-</html>
+    </html>
